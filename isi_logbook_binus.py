@@ -125,10 +125,10 @@ for day in range(1, last_day + 1):
             current_activity = "OFF"
             current_description = "OFF"
         else:
-        if c_in == "-":
-            c_in = input(f"Jam Clock In kosong dari Catapa. Masukkan manual (contoh: 08:30 am): ").strip()
-        else:
-            print(f"Clock In (Catapa): {c_in}")
+            if c_in == "-":
+                c_in = input(f"Jam Clock In kosong dari Catapa. Masukkan manual (contoh: 08:30 am): ").strip()
+            else:
+                print(f"Clock In (Catapa): {c_in}")
 
         if c_out == "-":
             c_out = input(f"Jam Clock Out kosong dari Catapa. Masukkan manual (contoh: 05:30 pm): ").strip()
