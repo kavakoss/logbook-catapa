@@ -95,11 +95,6 @@ for day in range(1, last_day + 1):
     date_str = current_date.strftime('%Y-%m-%d')
     date_formatted = current_date.strftime("%Y-%m-%dT00:00:00")
     
-    if current_date.weekday() >= 5:
-        print(f"Skipping {date_str} (Weekend)")
-        dilewati += 1
-        continue
-        
     print(f"\n--- Mengisi untuk tanggal {date_str} ---")
     
     b_clockin = binus_data.get(date_str, "")
@@ -108,21 +103,28 @@ for day in range(1, last_day + 1):
         dilewati += 1
         continue
 
-    c_in = catapa_data.get(date_str, {}).get("TIME_IN", "-")
-    c_out = catapa_data.get(date_str, {}).get("TIME_OUT", "-")
-    
-    is_off = 'n'
-    if c_in == "-" and c_out == "-":
-        is_off = input("Catapa kosong untuk hari ini. Apakah hari ini libur/tanggal merah (OFF)? (y/n) [n]: ").strip().lower()
-    else:
-        print("Data Catapa ditemukan. Berarti bukan tanggal merah.")
-        
-    if is_off == 'y':
+    if current_date.weekday() >= 5:
+        print("Hari Weekend. Otomatis diset OFF.")
         c_in = "OFF"
         c_out = "OFF"
         current_activity = "OFF"
         current_description = "OFF"
     else:
+        c_in = catapa_data.get(date_str, {}).get("TIME_IN", "-")
+        c_out = catapa_data.get(date_str, {}).get("TIME_OUT", "-")
+        
+        is_off = 'n'
+        if c_in == "-" and c_out == "-":
+            is_off = input("Catapa kosong untuk hari ini. Apakah hari ini libur/tanggal merah (OFF)? (y/n) [n]: ").strip().lower()
+        else:
+            print("Data Catapa ditemukan. Berarti bukan tanggal merah.")
+            
+        if is_off == 'y':
+            c_in = "OFF"
+            c_out = "OFF"
+            current_activity = "OFF"
+            current_description = "OFF"
+        else:
         if c_in == "-":
             c_in = input(f"Jam Clock In kosong dari Catapa. Masukkan manual (contoh: 08:30 am): ").strip()
         else:
@@ -164,4 +166,4 @@ for day in range(1, last_day + 1):
 
 print("\n=== SELESAI ===")
 print(f"Total berhasil diisi : {berhasil} hari")
-print(f"Total dilewati (weekend/terisi) : {dilewati} hari")
+print(f"Total dilewati (karena sudah terisi) : {dilewati} hari")
